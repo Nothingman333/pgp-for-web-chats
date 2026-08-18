@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>PGP for Web Chats — Help</title>
+<style>
+  body { margin:0; background:#0b141a; color:#e9edef; font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+  .wrap { max-width:760px; margin:0 auto; padding:32px 24px 60px; }
+  h1 { font-size:22px; margin:0 0 4px; }
+  h2 { font-size:16px; margin:28px 0 8px; color:#00d48a; }
+  h3 { font-size:13px; margin:18px 0 6px; color:#d1d7db; }
+  p, li { font-size:13.5px; line-height:1.6; color:#cfd8dc; }
+  code { background:#202c33; padding:1px 5px; border-radius:4px; font-size:12px; }
+  .lang { display:flex; gap:8px; margin-bottom:20px; }
+  .lang button { background:#202c33; border:1px solid #2f3b43; color:#aebac1; padding:6px 14px;
+    border-radius:8px; cursor:pointer; font-size:12px; }
+  .lang button.active { background:#00a884; color:#fff; border-color:#00a884; font-weight:600; }
+  table { border-collapse:collapse; margin:8px 0; }
+  td { padding:5px 12px 5px 0; font-size:13px; }
+  .warn { background:rgba(255,176,32,.1); border:1px solid #ffb020; border-radius:8px; padding:10px 12px; margin:12px 0; }
+  .warn p { color:#ffce7a; margin:0; }
+  hr { border:none; border-top:1px solid #202c33; margin:28px 0; }
+  section[hidden] { display:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="lang">
+    <button id="b-en" class="active">English</button>
+    <button id="b-tr">Türkçe</button>
+  </div>
+
+  <!-- ENGLISH -->
+  <section id="en">
+    <h1>🔒 PGP for Web Chats</h1>
+    <p>Encrypt messages with PGP on WhatsApp Web, Discord, Gmail and any other web chat box.
+       Everything happens in your browser — no server, no account.</p>
+
+    <h2>Getting started</h2>
+    <h3>1. Create your key</h3>
+    <p>Extension icon → <b>My Key</b> → <b>Generate Key</b>. Send your public key to the other
+       person with <b>Copy</b> or <b>Download as file</b> — use a channel other than the chat itself.</p>
+    <h3>2. Add the other person</h3>
+    <p>Extension icon → <b>Contacts</b> → name + their public key → <b>Save Contact</b>.</p>
+    <h3>3. Write</h3>
+    <p>Click any message box — a small 🔒 button appears next to it. Hover to open the panel,
+       click to pin it. Pick the recipient, type, press <b>Enter</b>.</p>
+    <table>
+      <tr><td>WhatsApp, Discord, Slack, Telegram</td><td>inserted <b>and sent automatically</b></td></tr>
+      <tr><td>Gmail and everything else</td><td><b>inserted only</b> — you press send</td></tr>
+    </table>
+
+    <h2>Reading</h2>
+    <p>PGP messages on the page are decrypted automatically. A dot marks each one:</p>
+    <table>
+      <tr><td>🟢 green</td><td>decrypted — plain text is shown instead of the ciphertext</td></tr>
+      <tr><td>🟡 yellow</td><td>you have a key, but this message was not encrypted to it — or the vault is locked</td></tr>
+      <tr><td>🔴 red</td><td>you have no key that can decrypt this</td></tr>
+    </table>
+    <p>If something is not decrypted automatically, use the panel's <b>Decrypt</b> tab: select the
+       text on the page, or paste the block in.</p>
+
+    <h2>Key protection</h2>
+    <p>With protection on, your private key and contact list are stored encrypted with
+       <code>PBKDF2 (300,000 iterations) + AES-256-GCM</code>. The derived key is never written to
+       disk — it lives in session memory and is discarded after the inactivity timeout (15 minutes
+       by default) or when the browser closes.</p>
+    <div class="warn"><p>With protection off, your private key sits in browser storage as plain
+       text. Anyone with access to this computer can copy it and read every message ever encrypted
+       to you.</p></div>
+    <p>Turn it on or off in <b>Settings → Key protection</b>. Right-clicking the extension icon
+       gives you <b>Lock now</b>.</p>
+
+    <h2>Encrypted images</h2>
+    <p>Images cannot be sent as encrypted <i>text</i> — the armored form of a 500 KB image is around
+       700,000 characters while WhatsApp allows ~65,000 and Discord 2,000. So they are encrypted as
+       <b>files</b>: panel → <b>Encrypt &amp; attach image</b>. The recipient downloads the file and
+       opens it from the panel's <b>Decrypt</b> tab. This step is manual — the extension cannot
+       reach attachments stored on the platform's servers.</p>
+
+    <h2>Backup</h2>
+    <p>Reinstalling the extension wipes browser storage. <b>If you lose your key, your old
+       encrypted messages can never be opened again.</b> Use <b>Backup → Export</b> to write your
+       key and all contacts into one file, and <b>Import</b> to bring them back.</p>
+
+    <h2 id="support">Troubleshooting</h2>
+    <p>This is an open, self-hosted extension — there is no company behind it and no support desk.
+       If something breaks:</p>
+    <ul>
+      <li>Reload the extension at <code>chrome://extensions</code> (↻) and refresh open tabs</li>
+      <li>Chat sites change their markup often; if a site stops working, the selectors in
+          <code>content/content.js</code> are where to look</li>
+      <li>Check the browser console (F12) for lines starting with <code>[PGP]</code></li>
+    </ul>
+
+    <h2>Honest limits</h2>
+    <ul>
+      <li>Messages are encrypted but <b>not signed</b> — you cannot verify who sent one.</li>
+      <li>There is no key verification: if someone swaps the public key during exchange, they can
+          read everything. Compare fingerprints over a trusted channel.</li>
+      <li>Metadata (who talks to whom, when, how often) stays visible to the platform.</li>
+      <li>Decrypted text is written into the page, so the site's own JavaScript could in principle
+          read it. The extension's own panel is isolated in a closed Shadow DOM.</li>
+      <li>This tool is not audited. For high-stakes privacy use Signal or desktop GnuPG.</li>
+    </ul>
+  </section>
+
+  <!-- TÜRKÇE -->
+  <section id="tr" hidden>
+    <h1>🔒 PGP for Web Chats</h1>
+    <p>WhatsApp Web, Discord, Gmail ve herhangi bir web yazışma kutusunda mesajlarınızı PGP ile
+       şifreler. Her şey tarayıcınızda olur — sunucu yok, hesap yok.</p>
+
+    <h2>Başlangıç</h2>
+    <h3>1. Anahtarınızı oluşturun</h3>
+    <p>Eklenti simgesi → <b>Anahtarım</b> → <b>Anahtar Oluştur</b>. Açık anahtarınızı
+       <b>Kopyala</b> veya <b>Dosya Olarak İndir</b> ile karşı tarafa iletin — sohbetin kendisi
+       dışında bir kanaldan.</p>
+    <h3>2. Karşı tarafı ekleyin</h3>
+    <p>Eklenti simgesi → <b>Kişiler</b> → ad + onun açık anahtarı → <b>Kişiyi Kaydet</b>.</p>
+    <h3>3. Yazın</h3>
+    <p>Herhangi bir yazma kutusuna tıklayın — yanında küçük bir 🔒 düğmesi belirir. Üzerine gelince
+       panel açılır, tıklayınca sabitlenir. Alıcıyı seçin, yazın, <b>Enter</b>'a basın.</p>
+    <table>
+      <tr><td>WhatsApp, Discord, Slack, Telegram</td><td>yerleştirilir <b>ve otomatik gönderilir</b></td></tr>
+      <tr><td>Gmail ve diğer siteler</td><td><b>sadece yerleştirilir</b> — göndermeye siz karar verirsiniz</td></tr>
+    </table>
+
+    <h2>Okuma</h2>
+    <p>Sayfadaki PGP mesajları otomatik çözülür. Her birinin köşesinde bir nokta belirir:</p>
+    <table>
+      <tr><td>🟢 yeşil</td><td>çözüldü — şifreli metin yerine düz mesaj gösteriliyor</td></tr>
+      <tr><td>🟡 sarı</td><td>anahtarınız var ama mesaj ona şifrelenmemiş — ya da kasa kilitli</td></tr>
+      <tr><td>🔴 kırmızı</td><td>bu mesajı çözecek anahtarınız yok</td></tr>
+    </table>
+    <p>Otomatik çözülmeyen bir mesaj olursa panelin <b>Çöz</b> sekmesini kullanın: metni sayfada
+       seçin ya da bloğu yapıştırın.</p>
+
+    <h2>Anahtar koruması</h2>
+    <p>Koruma açıkken özel anahtarınız ve kişi listeniz
+       <code>PBKDF2 (300.000 iterasyon) + AES-256-GCM</code> ile şifreli saklanır. Türetilmiş
+       anahtar diske asla yazılmaz; oturum belleğinde durur ve hareketsizlik süresi dolunca
+       (varsayılan 15 dakika) ya da tarayıcı kapanınca silinir.</p>
+    <div class="warn"><p>Koruma kapalıyken özel anahtarınız tarayıcı deposunda düz metin olarak
+       durur. Bu bilgisayara erişen herkes onu kopyalayıp size şifrelenmiş bütün mesajları
+       okuyabilir.</p></div>
+    <p><b>Ayarlar → Anahtar koruması</b>'ndan açıp kapatabilirsiniz. Eklenti simgesine sağ
+       tıklayınca <b>Lock now</b> (şimdi kilitle) seçeneği çıkar.</p>
+
+    <h2>Şifreli resim</h2>
+    <p>Resimler şifreli <i>metin</i> olarak gönderilemez — 500 KB'lık bir resmin armored hali
+       yaklaşık 700 bin karakter, WhatsApp ~65 bin, Discord 2 bin karaktere izin verir. Bu yüzden
+       <b>dosya</b> olarak şifrelenir: panel → <b>Resim şifrele ve ekle</b>. Karşı taraf dosyayı
+       indirip panelin <b>Çöz</b> sekmesinden açar. Bu adım elle yapılır — eklenti platformun
+       sunucusundaki eklere erişemez.</p>
+
+    <h2>Yedekleme</h2>
+    <p>Eklentiyi yeniden kurmak tarayıcı deposunu siler. <b>Anahtarınızı kaybederseniz eski
+       şifreli mesajlarınızı bir daha açamazsınız.</b> <b>Yedek → Dışa Aktar</b> ile anahtarınızı
+       ve tüm kişileri tek dosyaya yazın, <b>İçe Aktar</b> ile geri yükleyin.</p>
+
+    <h2>Sorun giderme</h2>
+    <p>Bu, kendi kendine barındırılan açık bir eklenti — arkasında bir şirket ya da destek masası
+       yok. Bir şey bozulursa:</p>
+    <ul>
+      <li><code>chrome://extensions</code> adresinden eklentiyi yenileyin (↻) ve sekmeleri F5 yapın</li>
+      <li>Sohbet siteleri arayüzlerini sık değiştirir; bir site çalışmaz olursa bakılacak yer
+          <code>content/content.js</code> içindeki seçicilerdir</li>
+      <li>Tarayıcı konsolunda (F12) <code>[PGP]</code> ile başlayan satırlara bakın</li>
+    </ul>
+
+    <h2>Dürüst sınırlar</h2>
+    <ul>
+      <li>Mesajlar şifreleniyor ama <b>imzalanmıyor</b> — kimin gönderdiğini doğrulayamazsınız.</li>
+      <li>Anahtar doğrulaması yok: takas sırasında biri araya girip kendi anahtarını koyarsa her
+          şeyi okur. Parmak izlerini güvendiğiniz bir kanaldan karşılaştırın.</li>
+      <li>Üstveri (kim kiminle, ne zaman, ne sıklıkla) platforma açık kalır.</li>
+      <li>Çözülmüş metin sayfaya yazıldığı için sitenin kendi JavaScript'i teorik olarak okuyabilir.
+          Eklentinin kendi paneli kapalı Shadow DOM içinde izole.</li>
+      <li>Bu araç denetlenmedi. Hayati gizlilik için Signal ya da masaüstü GnuPG kullanın.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+  const show = (l) => {
+    document.getElementById('en').hidden = (l !== 'en');
+    document.getElementById('tr').hidden = (l !== 'tr');
+    document.getElementById('b-en').classList.toggle('active', l === 'en');
+    document.getElementById('b-tr').classList.toggle('active', l === 'tr');
+  };
+  document.getElementById('b-en').addEventListener('click', () => show('en'));
+  document.getElementById('b-tr').addEventListener('click', () => show('tr'));
+  chrome.storage.local.get(['pgp_lang'], (d) => show(d.pgp_lang === 'tr' ? 'tr' : 'en'));
+  if (location.hash === '#support') {
+    setTimeout(() => document.getElementById('support')?.scrollIntoView(), 100);
+  }
+</script>
+</body>
+</html>
