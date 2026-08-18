@@ -1,0 +1,180 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  width: 380px;
+  font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: #0b141a;
+  color: #e9edef;
+}
+.app { padding: 14px 16px 18px; }
+header h1 { font-size: 16px; margin: 0 0 10px; }
+nav { display: flex; gap: 6px; margin-bottom: 12px; }
+.tab-btn {
+  flex: 1;
+  background: #202c33;
+  border: none;
+  color: #aebac1;
+  padding: 8px 4px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.tab-btn.active { background: #00a884; color: #fff; }
+.tab { display: none; }
+.tab.active { display: block; }
+
+label.small-label { display: block; font-size: 11px; color: #8696a0; margin: 10px 0 4px; }
+input[type=text], input[type=email], input[type=password], input[type=file], textarea {
+  width: 100%;
+  background: #2a3942;
+  border: 1px solid #364147;
+  color: #e9edef;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  resize: vertical;
+}
+textarea { font-family: monospace; font-size: 11px; }
+
+button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 9px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  background: #2a3942;
+  color: #e9edef;
+}
+button.primary { background: #00a884; color: #fff; font-weight: 600; }
+button.danger { background: #5a2a2a; color: #ff8a8a; }
+button:hover { filter: brightness(1.1); }
+
+.notice {
+  background: #202c33;
+  border-left: 3px solid #00a884;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+.notice.warn { border-left-color: #ffb020; }
+
+.status { margin-top: 8px; font-size: 12px; min-height: 16px; }
+.status.ok { color: #00d48a; }
+.status.err { color: #ff6b6b; }
+
+.chat-name { font-weight: 600; margin-bottom: 6px; }
+.divider { border-top: 1px solid #2a3942; margin: 14px 0; }
+.hint { font-size: 11px; color: #8696a0; }
+.ok { color: #00d48a; }
+.mono { font-family: monospace; font-size: 11px; word-break: break-all; }
+.kv { display: flex; justify-content: space-between; font-size: 12px; margin: 4px 0; gap: 8px; }
+.kv span { color: #8696a0; }
+
+#contact-list { list-style: none; padding: 0; margin: 8px 0; }
+#contact-list li {
+  background: #202c33;
+  padding: 8px 10px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#contact-list li button {
+  width: auto;
+  margin: 0;
+  padding: 4px 8px;
+  font-size: 11px;
+  background: #5a2a2a;
+  color: #ff8a8a;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #e9edef;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.checkbox-row input { width: auto; margin: 0; }
+#export-pass-row input { margin-top: 8px; }
+h3 { font-size: 13px; margin: 4px 0 6px; color: #d1d7db; }
+
+#debug-panel { margin-top: 8px; }
+#debug-log {
+  font-size: 10px;
+  background: #111a20;
+  color: #8fd3b6;
+}
+#btn-toggle-debug { font-size: 11px; color: #8696a0; }
+
+/* Başlık satırı + aç/kapa anahtarı */
+.head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.switch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  color: #8696a0;
+  margin: 0;
+}
+.switch input { width: auto; margin: 0; accent-color: #00a884; }
+.head-right { display: flex; align-items: center; gap: 10px; }
+.lang-select {
+  width: auto;
+  background: #2a3942;
+  border: 1px solid #364147;
+  color: #e9edef;
+  border-radius: 6px;
+  padding: 3px 6px;
+  font-size: 11px;
+  outline: none;
+}
+
+/* Tehlikeli bölge */
+.danger-zone {
+  border: 1px solid #5a2a2a;
+  background: rgba(255, 77, 79, .06);
+  border-radius: 10px;
+  padding: 10px;
+}
+.danger-zone h3 { color: #ff8a8a; }
+#reset-confirm { margin-top: 8px; }
+#reset-word {
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 700;
+}
+#btn-reset-do:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  filter: none;
+}
+
+/* Görünüm katmanları (kurulum / kilitli / ana) */
+.view { display: block; }
+.view[hidden] { display: none; }
+#view-setup h1, #view-locked h1 { font-size: 16px; margin: 0 0 8px; }
+#view-setup input, #view-locked input { margin-bottom: 8px; }
+#view-setup .hint, #view-locked .hint { margin-bottom: 10px; }
+
+/* Ayarlar sekmesi */
+#protection-state { margin: 4px 0 10px; }
+#prot-off-box input, #prot-on-box input { margin-bottom: 8px; }
+#lock-minutes { margin-bottom: 8px; }
+#disable-warn { margin-top: 10px; }
+nav { flex-wrap: wrap; }
+.tab-btn { font-size: 11px; }

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>PGP</title>
+<link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app">
+
+    <!-- İLK KURULUM -->
+    <section id="view-setup" class="view" hidden>
+      <h1>🔒 <span data-i18n="setup_title"></span></h1>
+      <p class="hint" data-i18n="setup_body"></p>
+      <input id="setup-pass" type="password" data-i18n-ph="setup_pass" />
+      <input id="setup-pass2" type="password" data-i18n-ph="setup_pass2" />
+      <button id="btn-setup-enable" class="primary" data-i18n="setup_enable"></button>
+      <button id="btn-setup-skip" data-i18n="setup_skip"></button>
+      <p class="hint" data-i18n="setup_skip_note"></p>
+      <div id="setup-status" class="status"></div>
+    </section>
+
+    <!-- KİLİTLİ -->
+    <section id="view-locked" class="view" hidden>
+      <h1>🔒 PGP</h1>
+      <p class="hint" data-i18n="locked_hint"></p>
+      <input id="unlock-pass" type="password" data-i18n-ph="unlock_ph" />
+      <button id="btn-unlock" class="primary" data-i18n="btn_unlock"></button>
+      <div id="unlock-status" class="status"></div>
+    </section>
+
+    <!-- ANA -->
+    <section id="view-main" class="view" hidden>
+      <header>
+        <div class="head-row">
+          <h1>🔒 <span data-i18n="app_title"></span></h1>
+          <div class="head-right">
+            <select id="lang-select" class="lang-select">
+              <option value="en">English</option>
+              <option value="tr">Türkçe</option>
+            </select>
+            <label class="switch" data-i18n-title="toggle_title">
+              <input type="checkbox" id="toggle-enabled" checked />
+              <span class="switch-label" id="toggle-label">On</span>
+            </label>
+          </div>
+        </div>
+        <nav>
+          <button class="tab-btn active" data-tab="keys" data-i18n="tab_keys"></button>
+          <button class="tab-btn" data-tab="contacts" data-i18n="tab_contacts"></button>
+          <button class="tab-btn" data-tab="backup" data-i18n="tab_backup"></button>
+          <button class="tab-btn" data-tab="settings" data-i18n="settings"></button>
+        </nav>
+      </header>
+
+      <!-- ANAHTARIM -->
+      <div id="tab-keys" class="tab active">
+        <div id="keys-empty">
+          <p data-i18n="keys_none"></p>
+          <button id="btn-generate" class="primary" data-i18n="btn_generate"></button>
+          <p class="hint" data-i18n-html="hint_restore"></p>
+        </div>
+        <div id="keys-present" hidden>
+          <p class="ok" data-i18n="keys_ready"></p>
+          <div class="kv"><span data-i18n="fingerprint"></span><b id="key-fpr" class="mono"></b></div>
+          <label class="small-label" data-i18n="your_public_key"></label>
+          <textarea id="pubkey-out" rows="5" readonly></textarea>
+          <button id="btn-copy-pub" data-i18n="btn_copy"></button>
+          <button id="btn-download-pub" data-i18n="btn_download_key"></button>
+          <div class="divider"></div>
+          <button id="btn-delete-keys" class="danger" data-i18n="btn_delete_keys"></button>
+          <p class="hint" data-i18n-html="delete_warn"></p>
+        </div>
+        <div id="keys-status" class="status"></div>
+      </div>
+
+      <!-- KİŞİLER -->
+      <div id="tab-contacts" class="tab">
+        <p class="hint" data-i18n="contacts_hint"></p>
+        <label class="small-label" data-i18n="contact_name"></label>
+        <input id="contact-name" type="text" data-i18n-ph="contact_name_ph" />
+        <label class="small-label" data-i18n="contact_key_label"></label>
+        <input id="contact-pubkey-file" type="file" accept=".asc,.txt,.pgp,.gpg,.key" />
+        <textarea id="contact-pubkey" rows="4" placeholder="-----BEGIN PGP PUBLIC KEY BLOCK-----..."></textarea>
+        <button id="btn-save-contact" class="primary" data-i18n="btn_save_contact"></button>
+        <button id="btn-self-test" data-i18n="btn_self_test"></button>
+        <p class="hint" data-i18n="self_test_hint"></p>
+        <div id="contact-status" class="status"></div>
+        <div class="divider"></div>
+        <h3 data-i18n="saved_contacts"></h3>
+        <ul id="contact-list"></ul>
+      </div>
+
+      <!-- YEDEK -->
+      <div id="tab-backup" class="tab">
+        <p class="hint" data-i18n-html="backup_hint"></p>
+        <h3 data-i18n="export_title"></h3>
+        <label class="checkbox-row">
+          <input type="checkbox" id="export-encrypt-toggle" checked />
+          <span data-i18n="protect_password"></span>
+        </label>
+        <div id="export-pass-row">
+          <input id="export-pass" type="password" data-i18n-ph="pass_ph" />
+          <input id="export-pass2" type="password" data-i18n-ph="pass2_ph" />
+        </div>
+        <button id="btn-export-backup" class="primary" data-i18n="btn_export"></button>
+        <div class="divider"></div>
+        <h3 data-i18n="import_title"></h3>
+        <input id="import-file" type="file" accept=".asc,.json,.txt" />
+        <input id="import-pass" type="password" data-i18n-ph="import_pass_ph" />
+        <label class="checkbox-row">
+          <input type="checkbox" id="import-merge" checked />
+          <span data-i18n="merge_contacts"></span>
+        </label>
+        <button id="btn-import-do" class="primary" data-i18n="btn_import"></button>
+        <div id="backup-status" class="status"></div>
+      </div>
+
+      <!-- AYARLAR -->
+      <div id="tab-settings" class="tab">
+        <h3 data-i18n="protection_title"></h3>
+        <p id="protection-state" class="kv"></p>
+
+        <div id="prot-off-box">
+          <input id="prot-pass" type="password" data-i18n-ph="setup_pass" />
+          <input id="prot-pass2" type="password" data-i18n-ph="setup_pass2" />
+          <button id="btn-enable-prot" class="primary" data-i18n="btn_enable_protection"></button>
+        </div>
+
+        <div id="prot-on-box" hidden>
+          <label class="small-label" data-i18n="lock_after"></label>
+          <select id="lock-minutes">
+            <option value="5">5</option>
+            <option value="15">15</option>
+            <option value="30">30</option>
+            <option value="60">60</option>
+            <option value="0" data-i18n="never_lock"></option>
+          </select>
+          <button id="btn-lock-now" data-i18n="btn_lock"></button>
+          <div class="divider"></div>
+          <label class="small-label" data-i18n="btn_change_password"></label>
+          <input id="chg-old" type="password" data-i18n-ph="current_pass" />
+          <input id="chg-new" type="password" data-i18n-ph="new_pass" />
+          <button id="btn-change-pass" data-i18n="btn_change_password"></button>
+          <div class="divider"></div>
+          <button id="btn-disable-prot" class="danger" data-i18n="btn_disable_protection"></button>
+        </div>
+
+        <div id="disable-warn" class="danger-zone" hidden>
+          <h3 data-i18n="disable_warning_title"></h3>
+          <p class="hint" data-i18n-html="disable_warning_body"></p>
+          <input id="disable-pass" type="password" data-i18n-ph="current_pass" />
+          <button id="btn-disable-confirm" class="danger" data-i18n="disable_confirm"></button>
+          <button id="btn-disable-cancel" data-i18n="btn_cancel"></button>
+        </div>
+
+        <div id="prot-status" class="status"></div>
+
+        <div class="divider"></div>
+        <div class="danger-zone">
+          <h3 data-i18n="danger_title"></h3>
+          <p class="hint" data-i18n-html="danger_hint"></p>
+          <button id="btn-reset-start" class="danger" data-i18n="btn_reset_start"></button>
+          <div id="reset-confirm" hidden>
+            <p class="hint" id="reset-type-hint"></p>
+            <input id="reset-word" type="text" autocomplete="off" />
+            <button id="btn-reset-do" class="danger" disabled data-i18n="btn_reset_do"></button>
+            <button id="btn-reset-cancel" data-i18n="btn_cancel"></button>
+          </div>
+          <div id="reset-status" class="status"></div>
+        </div>
+
+        <div class="divider"></div>
+        <button id="btn-help" data-i18n="help_link"></button>
+      </div>
+    </section>
+  </div>
+
+  <script src="../lib/i18n.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
