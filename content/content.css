@@ -1,0 +1,61 @@
+/* Sayfaya eklenen SÜSLEMELER.
+   Panelin kendi stilleri artık Shadow DOM içinde (content.js -> PANEL_CSS),
+   burada sadece mesaj balonlarını işaretleyen öğeler var. */
+
+/* Çözülmüş düz metin */
+.pgp-plaintext {
+  background: rgba(0, 168, 132, 0.14);
+  border: 1px solid #00a884;
+  border-radius: 8px;
+  padding: 6px 8px;
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.35;
+  color: inherit;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Çözülen mesajın ham şifreli hali gizlenir */
+.pgp-ciphertext-hidden { display: none !important; }
+
+/* Durum rozeti — mesajın neden çözülmediğini yazar */
+.pgp-badge {
+  display: block;
+  font-size: 11.5px;
+  line-height: 1.35;
+  font-weight: 600;
+  padding: 5px 8px;
+  border-radius: 7px;
+  margin-bottom: 5px;
+  max-width: 460px;
+}
+.pgp-badge-red {
+  background: rgba(255, 77, 79, .14);
+  border: 1px solid #ff4d4f;
+  color: #ff9b9b;
+}
+.pgp-badge-yellow {
+  background: rgba(255, 176, 32, .14);
+  border: 1px solid #ffb020;
+  color: #ffce7a;
+}
+
+/* Baloncuk köşesindeki durum noktası */
+.pgp-status-dot {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 2px solid #0b141a;
+  z-index: 20;
+  cursor: help;
+}
+.pgp-dot-red { background: #ff4d4f; }
+.pgp-dot-yellow { background: #ffb020; }
+.pgp-dot-green { background: #00d48a; }
+
+/* Panel kapsayıcısı: boş alan sayfadaki tıklamaları engellemesin */
+#pgp-host { pointer-events: none; }
