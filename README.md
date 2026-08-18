@@ -51,7 +51,7 @@ installed as an "unpacked" extension — this is completely normal for
 open-source browser extensions and takes about a minute:
 
 1. Click **Code → Download ZIP** on this page (or `git clone` the repo) and unzip it somewhere on your computer.
-2. Open `chrome://extensions` (Chrome, Brave, Edge, and most Chromium-based browsers) or `about:debugging#/runtime/this-firefox` for Firefox.
+2. Open `chrome://extensions` (Chrome, Brave, Edge, and most Chromium-based browsers).
 3. Turn on **Developer mode** (top right, Chrome-based browsers).
 4. Click **Load unpacked** and select the unzipped folder.
 5. Done — the 🔒 icon will appear in your toolbar.
